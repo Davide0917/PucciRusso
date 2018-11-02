@@ -53,7 +53,7 @@ public class GamePanel extends JPanel {
 		spriteTracker = new MediaTracker(this);
 		sprites = new HashMap<>();
 		
-		//Inserisco la coppia tag -> immagine
+		//Inserisco la coppia tag -> immagine ()
 		sprites.put("Player", tk.getImage("resources/image/plane.png"));
 		sprites.put("Sfondo", tk.getImage("resources/image/sfondo.png"));
 		
