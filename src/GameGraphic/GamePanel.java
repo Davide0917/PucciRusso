@@ -30,7 +30,7 @@ public class GamePanel extends JPanel {
 		super();
 		
 		//Debug
-		plane = new Airplane(100, 100, 3, 7);
+		plane = new Airplane(-100, 100, 3, 7);
 
 		initGUI();
 		initEH();
