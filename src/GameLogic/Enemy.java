@@ -27,4 +27,19 @@ public class Enemy {
 		this.lifes = lifes;
 	}
 
+	public void scroll() {
+		this.position.setX(position.getX() - 7);
+	}
+
+	// Metodo fire restituisce true quando il player è nel range di un nemico
+	// facendolo quindi sparare
+	public boolean fire(int y) {
+		int range = 20;
+		int rangetop = position.getY() + range, rangebottom = position.getY() - range;
+		if (y >= rangebottom && y <= rangetop)
+			return true;
+		else
+			return false;
+	}
+
 }

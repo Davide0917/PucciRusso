@@ -2,10 +2,10 @@ package GameLogic;
 
 import Component.Cell2D;
 
-public class Shot {
+public class MyShot {
 	Cell2D position;
 
-	public Shot(int x, int y) {
+	public MyShot(int x, int y) {
 		position = new Cell2D(x, y);
 	}
 
@@ -17,7 +17,7 @@ public class Shot {
 		return position.getY();
 	}
 
-	public void move() {
+	public void scroll() {
 		this.position.setX(position.getX() + 1);
 	}
 }
