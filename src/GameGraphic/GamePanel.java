@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import Component.Cell2D;
 import GameLogic.Airplane;
+import GameLogic.GameEngine;
 
 public class GamePanel extends JPanel {
 
@@ -24,14 +25,14 @@ public class GamePanel extends JPanel {
 
 	// JUST FOR DEBUG
 	Airplane plane;
-	//GameEngine ge.
+	//GameEngine ge;
 	
 	public GamePanel() {
 		super();
 		
 		//Debug
 		plane = new Airplane(-100, 100, 3, 7);
-
+		//ge = new GameEngine();
 		initGUI();
 		initEH();
 	}
