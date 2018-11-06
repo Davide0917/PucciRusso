@@ -28,7 +28,8 @@ public class Enemy {
 	}
 
 	public void scroll() {
-		this.position.setX(position.getX() - 7);
+		int speed = 10;
+		this.position.setX(this.getX() - speed);
 	}
 
 	// Metodo fire restituisce true quando il player è nel range di un nemico

@@ -22,7 +22,7 @@ public class Airplane {
 	}
 
 	public void move(int dir) {
-		position.setY(position.getY() + dir * speed);
+		this.position.setY(this.getY() + dir * speed);
 	}
 
 	public int getLifes() {

@@ -103,4 +103,6 @@ public class GamePanel extends JPanel {
 		int y = (startHeigth * ResolutionY) / 1080;
 		return new Cell2D(x, y);
 	}
+	
+
 }
