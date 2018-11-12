@@ -4,24 +4,29 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class GameEngine {
-	Airplane p;
-	LinkedList<Enemy> lsEnemy;
+	public Airplane p;
+	public LinkedList<Enemy> lsEnemy;
 
 	public GameEngine() {
-		p = new Airplane(-100, 100, 3, 7);
+		p = new Airplane(0, 200, 3, 7);
 		lsEnemy = new LinkedList<>();
 
 		// Non so se le posizioni dei nemici le inizializziamo tutte 0,0 nella lista
 		// oppure le carichiamo tutte divere
 		for (int i = 0; i < 10; i++)
-			lsEnemy.add(new Enemy(0, 0, 1));
+			lsEnemy.add(new Enemy(0, 0, 1, 10));
+	}
+	
+	// Fa nascere i nemici in posizioni random
+	public void startEnemy() {
+		//per far nascere i nemici mi servono le dimensioni del mondo???
 	}
 
-	// Il metodo start viene chiamato quando l'aereo del giocatore si trova nel
+	// Il metodo enemyFire viene chiamato quando l'aereo del giocatore si trova nel
 	// range di tiro dei nemici facendo partire l'enemyShot dalle coordinate
 	// dell'Enemy
-	public void fireEnemy(int x, int y) {
-		EnemyShot shot = new EnemyShot(x, y);
+	public void enemyFire(int x, int y) {
+		EnemyShot shot = new EnemyShot(x, y, 10);
 		int range = 20;
 		int intervallo;
 

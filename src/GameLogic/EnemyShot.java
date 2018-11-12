@@ -4,11 +4,13 @@ import Component.Cell2D;
 
 public class EnemyShot {
 	Cell2D position;
+	int speed;
 
 	// Le coordinate iniziali del proiettile dovranno essere le stesse del nemico
 	// che l'ha sparato
-	public EnemyShot(int x, int y) {
+	public EnemyShot(int x, int y, int speed) {
 		position = new Cell2D(x, y);
+		this.speed = speed;
 	}
 
 	public int getX() {
@@ -20,7 +22,6 @@ public class EnemyShot {
 	}
 
 	public void scroll() {
-		int speed = 10;
 		position.setX(getX() - speed);
 	}
 

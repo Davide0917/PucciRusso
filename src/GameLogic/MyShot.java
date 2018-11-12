@@ -4,9 +4,11 @@ import Component.Cell2D;
 
 public class MyShot {
 	Cell2D position;
+	int speed;
 
-	public MyShot(int x, int y) {
+	public MyShot(int x, int y, int speed) {
 		position = new Cell2D(x, y);
+		this.speed = speed;
 	}
 
 	public int getX() {
@@ -16,8 +18,12 @@ public class MyShot {
 	public int getY() {
 		return position.getY();
 	}
+	
+	public void setY(int y) {
+		position.setY(y);
+	}
 
 	public void scroll() {
-		this.position.setX(position.getX() + 1);
+		this.position.setX(position.getX() + speed);
 	}
 }

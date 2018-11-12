@@ -5,10 +5,12 @@ import Component.Cell2D;
 public class Enemy {
 	Cell2D position;
 	int lifes;
+	int speed;
 
-	public Enemy(int x, int y, int lifes) {
+	public Enemy(int x, int y, int lifes, int speed) {
 		position = new Cell2D(x, y);
 		this.lifes = lifes;
+		this.speed = speed;
 	}
 
 	public int getX() {
@@ -28,7 +30,6 @@ public class Enemy {
 	}
 
 	public void scroll() {
-		int speed = 10;
 		this.position.setX(this.getX() - speed);
 	}
 
