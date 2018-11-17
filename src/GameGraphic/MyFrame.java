@@ -19,7 +19,7 @@ public class MyFrame {
 	public static void main(String[] args) {
 		
 		//Creo il frame
-		frame = new JFrame("MyFrame");
+		frame = new JFrame("!!_September");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setAlwaysOnTop(true);
 		
