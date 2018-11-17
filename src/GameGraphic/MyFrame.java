@@ -9,9 +9,9 @@ import javax.swing.JPanel;
 public class MyFrame {
 	
 	//Parametri per gestire fullscreeen e dimensioni
-	static boolean FULL_SCREEN = true;
+	static boolean FULL_SCREEN = false;
 	static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
-	static int WIDTH = 800, HEIGHT = 600;
+	static int WIDTH = 1200, HEIGHT = 900;
 
 	static JFrame frame;
 	static JPanel panel;

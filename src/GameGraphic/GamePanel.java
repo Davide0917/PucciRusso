@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-package GameGraphic;
+/*package GameGraphic;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -105,7 +104,7 @@ public class GamePanel extends JPanel {
 		return new Cell2D(x, y);
 	}
 }
-=======
+*/
 package GameGraphic;
 
 import java.awt.*;
@@ -131,7 +130,7 @@ public class GamePanel extends JPanel {
 	Map<String, Image> sprites;
 
 	// JUST FOR DEBUG
-	// Airplane plane;
+	Airplane plane;
 	// World è un oggetto gameEngine dove gira è presente tutta la logica del gioco
 	GameEngine world;
 
@@ -139,7 +138,7 @@ public class GamePanel extends JPanel {
 		super();
 
 		// Debug
-		// plane = new Airplane(-50, 100, 3, 7);
+		plane = new Airplane(-50, 100, 5, 7);
 		world = new GameEngine();
 		initGUI();
 		initEH();
@@ -152,7 +151,11 @@ public class GamePanel extends JPanel {
 		g.drawImage(sprites.get("Sfondo"), 0, 0, ResolutionX, ResolutionY, null);
 
 		Cell2D dims = GetScaledDims(sprites.get("Player").getWidth(null), sprites.get("Player").getHeight(null));
+		Cell2D dimLifes = GetScaledDims(sprites.get("Lifes").getWidth(null), sprites.get("Lifes").getHeight(null));
 		g.drawImage(sprites.get("Player"), world.p.getX(), world.p.getY(), dims.getX(), dims.getY(), null);
+		for(int i = 0; i < plane.getLifes(); i++) {
+			g.drawImage(sprites.get("Lifes"), (ResolutionX/3)+(i*(dimLifes.getX()/10)), (ResolutionY-(dimLifes.getY()/4)), dimLifes.getX()/2, dimLifes.getY()/2, null);		
+		}
 	}
 
 	public void initGUI() {
@@ -166,6 +169,7 @@ public class GamePanel extends JPanel {
 		sprites.put("Player", tk.getImage("resources/image/plane.png"));
 		sprites.put("Sfondo", tk.getImage("resources/image/sfondo.png"));
 		sprites.put("Shot", tk.getImage("resources/image/shot.png"));
+		sprites.put("Lifes", tk.getImage("resources/image/Cuore3.png"));
 
 		// Aggiungo le immagini al mediaTracker per tenerne traccia
 		int index = 0;
@@ -217,4 +221,4 @@ public class GamePanel extends JPanel {
 	}
 
 }
->>>>>>> ab840dac17e387bc7e6acbca5e9666bc20189e78
+
