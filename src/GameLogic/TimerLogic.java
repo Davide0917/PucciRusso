@@ -17,8 +17,10 @@ public class TimerLogic extends Thread {
 	@Override
 	public void run() {
 		while(true) {
-			
 				ge.FixedUpdate("Enemy");
+				
+				if(ge.s.isFire()==true)
+					ge.PlayerFire();
 			try {
 				sleep(500 / FPS);
 			} catch (InterruptedException e) {

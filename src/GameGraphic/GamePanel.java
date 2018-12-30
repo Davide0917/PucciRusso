@@ -130,22 +130,15 @@ public class GamePanel extends JPanel {
 	MediaTracker spriteTracker;
 	Map<String, Image> sprites;
 
-	// JUST FOR DEBUG
-	Airplane plane;
 	// World è un oggetto gameEngine dove gira è presente tutta la logica del gioco
 	GameEngine world;
-	MyShot MShot;
-	Enemy nemico;
-
 	public GamePanel(GameEngine world) {
 		super();
 
 		// Debug
-		plane = new Airplane(-50, 100, 5, 7);
-		nemico = new Enemy(500, 100, 1, 2);
 
 		this.world = world;
-		MShot = new MyShot(0, 0, 20);
+		//MShot = new MyShot(0, 0, 20);
 		initGUI();
 		initEH();
 	}
@@ -166,16 +159,17 @@ public class GamePanel extends JPanel {
 		DimPlaneY = dims.getY();
 
 		g.drawImage(sprites.get("Player"), world.p.getX(), world.p.getY(), dims.getX(), dims.getY(), null);
-		for (int i = 0; i < plane.getLifes(); i++) {
+		for (int i = 0; i < world.p.getLifes(); i++) {
 			g.drawImage(sprites.get("Lifes"), (ResolutionX / 3) + (i * (dimLifes.getX() / 10)),
 					(ResolutionY - (dimLifes.getY() / 4)), dimLifes.getX() / 2, dimLifes.getY() / 2, null);
 		}
-
-		g.drawImage(sprites.get("Enemy"), world.e.getX(), world.e.getY(), dimEnemy.getX() * 2, dimEnemy.getY() * 2,
-				null);
-
+		if (world.e.getLifes()>=1) {
+			g.drawImage(sprites.get("Enemy"), world.e.getX(), world.e.getY(), dimEnemy.getX() * 2, dimEnemy.getY() * 2,
+					null);
+		}
 		if (world.s.isFire() == true) {
-			g.drawImage(sprites.get("Shot"), (world.s.getX() + (dims.getX()/2)), (world.s.getY() ), (dimShot.getX() / 6), (dimShot.getY() / 6), null);
+			g.drawImage(sprites.get("Shot"), (world.s.getX() + (dims.getX() / 2)), (world.s.getY() + (dims.getY() / 3)),
+					(dimShot.getX() / 7), (dimShot.getY() / 10), null);
 		}
 
 	}
@@ -225,14 +219,14 @@ public class GamePanel extends JPanel {
 					world.p.move(1);
 				repaint();
 			}
-			@Override	
-			public void keyReleased(KeyEvent e) {				
-				  if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					  System.out.println("Sto Sparando-....."); 
-					  world.s.setX(world.p.getX()); 
-					  world.s.setY(world.p.getY());
-					  world.s.setFire(true);
-				  }
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					world.s.setX(world.p.getX());
+					world.s.setY(world.p.getY());
+					world.s.setFire(true);
+				}
 			}
 		});
 	}

@@ -40,8 +40,12 @@ public class MyShot {
 	}
 
 	public void scroll() {
+		//System.out.println(getX());
 		this.position.setX(position.getX() + speed);
 
+	}
+	public void reset() {
+		this.position.setX(0);
 	}
 
 }

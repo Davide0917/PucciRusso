@@ -10,15 +10,15 @@ public class GameEngine {
 	public LinkedList<Enemy> lsEnemy;
 
 	public GameEngine() {
-		p = new Airplane(0, 0, 3, 7);
+		p = new Airplane(0, 0, 5, 7);
 		e = new Enemy(2000, p.getY(), 1, 2);
-		s = new MyShot(100, 100, 20);
+		s = new MyShot(0, 100, 5);
 		lsEnemy = new LinkedList<>();
 
 		// Non so se le posizioni dei nemici le inizializziamo tutte 0,0 nella lista
 		// oppure le carichiamo tutte divere
-	for (int i = 0; i < 10; i++)
-		lsEnemy.add(new Enemy(2000, 500, 1, 10));
+		for (int i = 0; i < 10; i++)
+			lsEnemy.add(new Enemy(2000, 500, 1, 10));
 	}
 
 	// Fa nascere i nemici in posizioni random
@@ -69,8 +69,25 @@ public class GameEngine {
 	}
 
 	public void FixedUpdate(String tag) {
-		if(tag == "Enemy")
+		if (tag == "Enemy")
 			e.scroll();
+	}
+
+	// Metodo da sistemaree era solo per capire il procedimento
+	public void PlayerFire() {
+		if (s.getX() <= 1800) {
+			s.scroll();
+
+		} else {
+			s.setFire(false);
+			s.reset();
+		}
+		if (((s.getY() >= (e.getY() - 150)) && (s.getY() <= e.getY() + 150)) && (((s.getX() >= (e.getX() - 150)) && (s.getX() <= e.getX() + 150)))) {
+			e.setLifes(e.getLifes() - 1);
+			s.reset();
+			s.setFire(false);
+			System.out.println("Colpitoooooo");
+		}
 	}
 
 }
