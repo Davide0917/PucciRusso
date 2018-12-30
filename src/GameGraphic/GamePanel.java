@@ -109,7 +109,6 @@ package GameGraphic;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Line2D;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,13 +116,15 @@ import javax.swing.*;
 
 import Component.Cell2D;
 import GameLogic.Airplane;
+import GameLogic.Enemy;
 import GameLogic.GameEngine;
+import GameLogic.MyShot;
 
 public class GamePanel extends JPanel {
 
 	// Reference alla risoluzione del panello
 	private int ResolutionX, ResolutionY;
-
+	private int DimPlaneX, DimPlaneY;
 	// Reference al toolkit e alle immagini
 	Toolkit tk;
 	MediaTracker spriteTracker;
@@ -133,13 +134,18 @@ public class GamePanel extends JPanel {
 	Airplane plane;
 	// World è un oggetto gameEngine dove gira è presente tutta la logica del gioco
 	GameEngine world;
+	MyShot MShot;
+	Enemy nemico;
 
-	public GamePanel() {
+	public GamePanel(GameEngine world) {
 		super();
 
 		// Debug
 		plane = new Airplane(-50, 100, 5, 7);
-		world = new GameEngine();
+		nemico = new Enemy(500, 100, 1, 2);
+
+		this.world = world;
+		MShot = new MyShot(0, 0, 20);
 		initGUI();
 		initEH();
 	}
@@ -152,10 +158,26 @@ public class GamePanel extends JPanel {
 
 		Cell2D dims = GetScaledDims(sprites.get("Player").getWidth(null), sprites.get("Player").getHeight(null));
 		Cell2D dimLifes = GetScaledDims(sprites.get("Lifes").getWidth(null), sprites.get("Lifes").getHeight(null));
+		Cell2D dimShot = GetScaledDims(sprites.get("Shot").getWidth(null), sprites.get("Shot").getHeight(null));
+
+		Cell2D dimEnemy = GetScaledDims(sprites.get("Enemy").getWidth(null), sprites.get("Enemy").getHeight(null));
+
+		DimPlaneX = dims.getX();
+		DimPlaneY = dims.getY();
+
 		g.drawImage(sprites.get("Player"), world.p.getX(), world.p.getY(), dims.getX(), dims.getY(), null);
-		for(int i = 0; i < plane.getLifes(); i++) {
-			g.drawImage(sprites.get("Lifes"), (ResolutionX/3)+(i*(dimLifes.getX()/10)), (ResolutionY-(dimLifes.getY()/4)), dimLifes.getX()/2, dimLifes.getY()/2, null);		
+		for (int i = 0; i < plane.getLifes(); i++) {
+			g.drawImage(sprites.get("Lifes"), (ResolutionX / 3) + (i * (dimLifes.getX() / 10)),
+					(ResolutionY - (dimLifes.getY() / 4)), dimLifes.getX() / 2, dimLifes.getY() / 2, null);
 		}
+
+		g.drawImage(sprites.get("Enemy"), world.e.getX(), world.e.getY(), dimEnemy.getX() * 2, dimEnemy.getY() * 2,
+				null);
+
+		if (world.s.isFire() == true) {
+			g.drawImage(sprites.get("Shot"), (world.s.getX() + (dims.getX()/2)), (world.s.getY() ), (dimShot.getX() / 6), (dimShot.getY() / 6), null);
+		}
+
 	}
 
 	public void initGUI() {
@@ -170,6 +192,8 @@ public class GamePanel extends JPanel {
 		sprites.put("Sfondo", tk.getImage("resources/image/sfondo.png"));
 		sprites.put("Shot", tk.getImage("resources/image/shot.png"));
 		sprites.put("Lifes", tk.getImage("resources/image/Cuore3.png"));
+
+		sprites.put("Enemy", tk.getImage("resources/image/Enemy.png"));
 
 		// Aggiungo le immagini al mediaTracker per tenerne traccia
 		int index = 0;
@@ -201,6 +225,15 @@ public class GamePanel extends JPanel {
 					world.p.move(1);
 				repaint();
 			}
+			@Override	
+			public void keyReleased(KeyEvent e) {				
+				  if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					  System.out.println("Sto Sparando-....."); 
+					  world.s.setX(world.p.getX()); 
+					  world.s.setY(world.p.getY());
+					  world.s.setFire(true);
+				  }
+			}
 		});
 	}
 
@@ -221,4 +254,3 @@ public class GamePanel extends JPanel {
 	}
 
 }
-

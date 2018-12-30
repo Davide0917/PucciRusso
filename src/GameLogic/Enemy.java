@@ -32,6 +32,7 @@ public class Enemy {
 	public void scroll() {
 		this.position.setX(this.getX() - speed);
 	}
+	
 
 	// Metodo fire restituisce true quando il player è nel range di un nemico
 	// facendolo quindi sparare
