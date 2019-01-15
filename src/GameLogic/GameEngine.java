@@ -14,7 +14,7 @@ public class GameEngine {
 
 	public GameEngine(int x, int y) {
 		p = new Airplane(0, 0, 3, 10);
-		s = new MyShot(100, 100, 20);
+		s = new MyShot(p.getX(), p.getY(), 7);
 		lsEnemy = new LinkedList<>();
 		width = x;
 		height = y;
@@ -22,7 +22,7 @@ public class GameEngine {
 		// dell'areoplano ma non riesco
 		// a mappare bene la grandezza del mondo
 		for (int i = 0; i < 10; i++)
-			lsEnemy.add(new Enemy(width, randInt(p.getY() - 100, p.getY() + 100), 1, 2));
+			lsEnemy.add(new Enemy(width, randInt(p.getY() - 200, p.getY() + 200), 1, 2));
 	}
 
 	// Fa nascere i nemici in posizioni random
@@ -72,6 +72,25 @@ public class GameEngine {
 		return randoNum;
 	}
 
+	// Controlla collisioni tra myshot e enemy ma bisogna definire meglio le
+	// collision box che per ora è un quadrato 20x20
+	public boolean collision(MyShot shot, Enemy e) {
+		if (shot.getX() > e.getX() - 10 && shot.getX() < e.getX() + 10 && shot.getY() > e.getY() - 10
+				&& shot.getY() < e.getY() + 10)
+			return true;
+		return false;
+	}
+
+	// Per il momento per le collision box sto usando costanti ma dovrei avere le
+	// dimensioni dell'aereo e dei vari sprite
+	public boolean collisionAirplane(Airplane a, Enemy e) {
+		if (a.getX() > e.getX() - 120 && a.getX() < e.getX() + 120 && a.getY() > e.getY() - 50
+				&& a.getY() < e.getY() + 50) {
+			return true;
+		}
+		return false;
+	}
+
 	public void FixedUpdate(String tag) {
 
 		if (tag == "Enemy") {
@@ -85,10 +104,34 @@ public class GameEngine {
 				// richiamo la funzione align che scrolla in verticale
 				lsEnemy.get(index).align(1);
 
+			if (lsEnemy.get(index).getX() < 0 - width * 1 / 3 && index < 10)
+				index++;
 		}
-		if (lsEnemy.get(index).getX() < 0 - width * 1 / 3 && index < 10) {
+
+		if (tag == "Shot") {
+
+			// se lo sparo supera lo schermo scompare e se ne crea un altro pronto ad essere
+			// sparato
+			if (s.isFire() && s.getX() < width * 75 / 100) {
+				s.scroll();
+			} else {
+				s = new MyShot(p.getX(), p.getY(), 7);
+			}
+
+		}
+
+		// collisione fra sparo e nemico
+		if (s.isFire() && collision(s, lsEnemy.get(index))) {
+			s.setFire(false);
 			index++;
 		}
+
+		// collisione kamikaze diminuisce le vite
+		if (collisionAirplane(p, lsEnemy.get(index))) {
+			p.setLifes(p.getLifes() - 1);
+			index++;
+		}
+		System.out.println(p.getLifes());
 	}
 
 	public int getIndex() {

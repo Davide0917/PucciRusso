@@ -19,6 +19,7 @@ public class TimerLogic extends Thread {
 		while(true) {
 			
 				ge.FixedUpdate("Enemy");
+				ge.FixedUpdate("Shot");
 			try {
 				sleep(500 / FPS);
 			} catch (InterruptedException e) {

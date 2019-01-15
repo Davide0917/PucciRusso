@@ -131,11 +131,11 @@ public class GamePanel extends JPanel {
 	Map<String, Image> sprites;
 
 	// JUST FOR DEBUG
-	Airplane plane;
+	// Airplane plane;
 	// World è un oggetto gameEngine dove gira è presente tutta la logica del gioco
 	GameEngine world;
-	MyShot MShot;
-	Enemy nemico;
+	// MyShot MShot;
+	// Enemy nemico;
 
 	public GamePanel(GameEngine world) {
 		super();
@@ -145,7 +145,7 @@ public class GamePanel extends JPanel {
 		// nemico = new Enemy(500, 100, 1, 2);
 
 		this.world = world;
-		MShot = new MyShot(0, 0, 20);
+		// MShot = new MyShot(0, 0, 20);
 		initGUI();
 		initEH();
 	}
@@ -180,8 +180,9 @@ public class GamePanel extends JPanel {
 			System.out.println("Hai vinto");
 
 		if (world.s.isFire() == true) {
-			g.drawImage(sprites.get("Shot"), (world.s.getX() + (dims.getX() / 2)), (world.s.getY()),
-					(dimShot.getX() / 6), (dimShot.getY() / 6), null);
+			g.drawImage(sprites.get("Shot"), world.s.getX() + sprites.get("Player").getWidth(null) * 40 / 100,
+					world.s.getY() + sprites.get("Player").getHeight(null) * 26 / 100, (dimShot.getX() / 6),
+					(dimShot.getY() / 6), null);
 		}
 
 	}
@@ -236,12 +237,10 @@ public class GamePanel extends JPanel {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					System.out.println("Sto Sparando-.....");
-					world.s.setX(world.p.getX());
-					world.s.setY(world.p.getY());
-					world.s.setFire(true);
-				}
+					if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+						System.out.println("Sto Sparando-.....");
+						world.s.setFire(true);
+					}
 			}
 		});
 	}
