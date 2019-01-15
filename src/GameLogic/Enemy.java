@@ -6,6 +6,7 @@ public class Enemy {
 	Cell2D position;
 	int lifes;
 	int speed;
+	int align_speed = 1;
 
 	public Enemy(int x, int y, int lifes, int speed) {
 		position = new Cell2D(x, y);
@@ -21,6 +22,10 @@ public class Enemy {
 		return position.getY();
 	}
 
+	public int getSpeed() {
+		return speed;
+	}
+
 	public int getLifes() {
 		return lifes;
 	}
@@ -32,7 +37,10 @@ public class Enemy {
 	public void scroll() {
 		this.position.setX(this.getX() - speed);
 	}
-	
+
+	public void align(int dir) {
+		this.position.setY(this.getY() + (align_speed * dir));
+	}
 
 	// Metodo fire restituisce true quando il player è nel range di un nemico
 	// facendolo quindi sparare

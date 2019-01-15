@@ -13,7 +13,7 @@ import GameLogic.TimerLogic;
 public class MyFrame {
 	
 	//Parametri per gestire fullscreeen e dimensioni
-	static boolean FULL_SCREEN = true;
+	static boolean FULL_SCREEN = false;
 	static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 	static int WIDTH = 1200, HEIGHT = 900;
 
@@ -42,7 +42,7 @@ public class MyFrame {
 		}
 		
 		//Chiamo l'avvio dei threads
-		ge = new GameEngine();
+		ge = new GameEngine(WIDTH,HEIGHT);
 		
 		//Creo il pannello di gioco
 		panel = new GamePanel(ge);

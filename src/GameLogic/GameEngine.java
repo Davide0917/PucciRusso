@@ -6,19 +6,23 @@ import java.util.Random;
 public class GameEngine {
 	public Airplane p;
 	public MyShot s;
-	public Enemy e;
 	public LinkedList<Enemy> lsEnemy;
+	int index;
+	public Enemy e;
+	// Dal Frame mi prendo le dimensioni dello schermo
+	public int width, height;
 
-	public GameEngine() {
-		p = new Airplane(0, 0, 3, 7);
-		e = new Enemy(2000, p.getY(), 1, 2);
+	public GameEngine(int x, int y) {
+		p = new Airplane(0, 0, 3, 10);
 		s = new MyShot(100, 100, 20);
 		lsEnemy = new LinkedList<>();
-
-		// Non so se le posizioni dei nemici le inizializziamo tutte 0,0 nella lista
-		// oppure le carichiamo tutte divere
-	for (int i = 0; i < 10; i++)
-		lsEnemy.add(new Enemy(2000, 500, 1, 10));
+		width = x;
+		height = y;
+		// Carichiamo i nemici nella linkedlist tutti in posizioni casuali vicino alla y
+		// dell'areoplano ma non riesco
+		// a mappare bene la grandezza del mondo
+		for (int i = 0; i < 10; i++)
+			lsEnemy.add(new Enemy(width, randInt(p.getY() - 100, p.getY() + 100), 1, 2));
 	}
 
 	// Fa nascere i nemici in posizioni random
@@ -69,8 +73,26 @@ public class GameEngine {
 	}
 
 	public void FixedUpdate(String tag) {
-		if(tag == "Enemy")
-			e.scroll();
+
+		if (tag == "Enemy") {
+			lsEnemy.get(index).scroll();
+
+			// dir serve per sapere se il nemico deve scendere o salire
+			if (lsEnemy.get(index).getY() > p.getY())
+				// richiamo la funzione align che scrolla in verticale
+				lsEnemy.get(index).align(-1);
+			else
+				// richiamo la funzione align che scrolla in verticale
+				lsEnemy.get(index).align(1);
+
+		}
+		if (lsEnemy.get(index).getX() < 0 - width * 1 / 3 && index < 10) {
+			index++;
+		}
+	}
+
+	public int getIndex() {
+		return index;
 	}
 
 }
