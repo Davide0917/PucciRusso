@@ -11,26 +11,25 @@ import GameLogic.TimerGraphic;
 import GameLogic.TimerLogic;
 
 public class MyFrame {
-	
-	//Parametri per gestire fullscreeen e dimensioni
+
 	static boolean FULL_SCREEN = true;
 	static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
-	static int WIDTH = 1200, HEIGHT = 900;
+	static int WIDTH = 800, HEIGHT = 600;
 
 	static JFrame frame;
-	static JPanel panel;
-	static TimerLogic Tl;
-	static TimerGraphic Tg;
-	static GameEngine ge;
+	static STATE state;
+	static JPanel gamePanel, menuPanel, currentPanel;
 
-	public static void main(String[] args) {
-		
-		//Creo il frame
-		frame = new JFrame("MyFrame");
+	static GameEngine ge;
+	static TimerLogic tl;
+	static TimerGraphic tg;
+
+	public static void main(String[] args) throws InterruptedException {
+
+		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setAlwaysOnTop(true);
-		
-		//Setto il frame in fullscreen
+
 		if (!FULL_SCREEN) {
 			frame.setUndecorated(false);
 			frame.setResizable(false);
@@ -40,31 +39,117 @@ public class MyFrame {
 			WIDTH = device.getFullScreenWindow().getWidth();
 			HEIGHT = device.getFullScreenWindow().getHeight();
 		}
+
+		menuPanel = new GameMenu();
+		SwitchPanel(menuPanel);
+		state = ((GameMenu) menuPanel).getState();
+
+		while (state != STATE.EXIT) {
+			while (state == STATE.GAME) {
+				Thread.sleep(1000);
+				state = ((GamePanel) gamePanel).getState();
+			}
+
+			if (state == STATE.HOME || state == STATE.GAMEOVER) {
+				StopGame();
+				SwitchPanel(menuPanel);
+				((GameMenu) menuPanel).setState(STATE.HOME);
+			}
+			
+			while (state == STATE.HOME || state == STATE.GAMEOVER) {
+				Thread.sleep(1000);
+				state = ((GameMenu) menuPanel).getState();
+			}
+			
+			if (state == STATE.GAME)
+				StartGame(GAMEMODE.OFFLINE);
+			
+			
+			if (state == STATE.PAUSE) {
+				SwitchPanel(menuPanel);
+				PauseGame();
+				((GameMenu) menuPanel).setState(STATE.PAUSE);
+			}
+			
+			while (state == STATE.PAUSE) {
+				Thread.sleep(1000);
+				state = ((GameMenu) menuPanel).getState();
+			}
+			
+			if (state == STATE.GAME) {
+				ResumeGame();
+				SwitchPanel(gamePanel);
+				((GamePanel) gamePanel).setState(STATE.GAME);
+			}
+		}
+
+		System.exit(0);
+	}
+
+	private static void StartGame(GAMEMODE gamemode) {
 		
-		//Chiamo l'avvio dei threads
-		ge = new GameEngine();
+		if (tl == null || !tl.isAlive() || tg == null || tg.isAlive()) {
+			int width = (WIDTH * 20) / 800;
+			int heigth = (HEIGHT * 15) / 600;
+			
+			ge = new GameEngine();
+			gamePanel = new GamePanel(ge);
+			SwitchPanel(gamePanel);
+	
+			// Start threads
+			tl = new TimerLogic(ge);
+			tg = new TimerGraphic(gamePanel);
+			
+			tl.start();
+			tg.start();
+			
+			state = STATE.GAME;
+		} else {
+			ResumeGame();
+		}
+	}
+
+	private static void StopGame() {	
+		if (tl != null && tl.isAlive())
+			tl.stop();
+		if (tg != null && tg.isAlive())
+			tg.stop();
 		
-		//Creo il pannello di gioco
-		panel = new GamePanel(ge);
+		
+	}
+	
+	private static void PauseGame() {
+		if (tl != null && tl.isAlive())
+			tl.suspend();
+		if (tg != null && tg.isAlive())
+			tg.suspend();
+		
+		/*if (server != null && server.isAlive())
+			server.suspend();
+		if (client != null && client.isAlive())
+			client.suspend();*/
+	}
+	
+	private static void ResumeGame() {
+		if (tl != null) tl.resume();
+		if (tg != null) tg.resume();
+		
+	}
+
+	private static void SwitchPanel(JPanel panel) {
+		if (currentPanel != null)
+			frame.remove(currentPanel);
 		panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		
-		//Aggiungo il panello di gioco e lo rendo visibile
+
 		frame.add(panel);
 		frame.pack();
 		frame.setVisible(true);
 
-		//Do il focus (trigger degli eventi) al panello
 		panel.setFocusable(true);
 		panel.requestFocusInWindow();
 		frame.repaint();
-		Go();		
+
+		currentPanel = panel;
 	}
-	public static void Go() {
-		System.out.println("Avvio Timer Logic e Graphic");
-		Tl = new TimerLogic(ge);
-		Tg = new TimerGraphic(panel);
-		Tl.start();
-		Tg.start();
-	}
-	
 }
+

@@ -6,17 +6,17 @@ import javax.swing.JPanel;
 
 public class TimerGraphic extends Thread{
 
-	private JPanel panel;
+	private JPanel gamePanel;
 	private int FPS = 60;
 	
-	public TimerGraphic(JPanel panel) {
-		this.panel = panel;
+	public TimerGraphic(JPanel gamePanel) {
+		this.gamePanel = gamePanel;
 	}
 	
 	@Override
 	public void run() {
 		while(true) {
-			panel.repaint();
+			gamePanel.repaint();
 			Toolkit.getDefaultToolkit().sync();
 			try {
 				sleep(500 / FPS);

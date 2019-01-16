@@ -120,7 +120,10 @@ import GameLogic.Enemy;
 import GameLogic.GameEngine;
 import GameLogic.MyShot;
 
+enum GAMEMODE { OFFLINE };
 public class GamePanel extends JPanel {
+
+	private GAMEMODE gamemode;
 
 	// Reference alla risoluzione del panello
 	private int ResolutionX, ResolutionY;
@@ -129,18 +132,23 @@ public class GamePanel extends JPanel {
 	Toolkit tk;
 	MediaTracker spriteTracker;
 	Map<String, Image> sprites;
+	STATE state;
 
 	// World è un oggetto gameEngine dove gira è presente tutta la logica del gioco
 	GameEngine world;
 	public GamePanel(GameEngine world) {
 		super();
-
+		
+		gamemode = GAMEMODE.OFFLINE;	
+		
 		// Debug
 
 		this.world = world;
 		//MShot = new MyShot(0, 0, 20);
 		initGUI();
 		initEH();
+
+		state = STATE.GAME;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -217,6 +225,9 @@ public class GamePanel extends JPanel {
 					world.p.move(-1);
 				else if (e.getKeyCode() == KeyEvent.VK_DOWN)
 					world.p.move(1);
+
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+					state = STATE.PAUSE;
 				repaint();
 			}
 
@@ -246,5 +257,11 @@ public class GamePanel extends JPanel {
 		int y = (startHeigth * ResolutionY) / 1080;
 		return new Cell2D(x, y);
 	}
+	public STATE getState() {
+		return state;
+	}
 
+	public void setState(STATE state) {
+		this.state = state;
+	}
 }

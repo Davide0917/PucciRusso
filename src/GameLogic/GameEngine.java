@@ -1,29 +1,28 @@
 package GameLogic;
 
-import java.util.LinkedList;
+import java.util.*;
 import java.util.Random;
 
 public class GameEngine {
 	public Airplane p;
 	public MyShot s;
 	public Enemy e;
-	public LinkedList<Enemy> lsEnemy;
+	public List<Enemy> lse;
 
 	public GameEngine() {
 		p = new Airplane(0, 0, 5, 7);
-		e = new Enemy(2000, p.getY(), 1, 2);
+		e = new Enemy(2000, p.getY(), 3, 2);
 		s = new MyShot(0, 100, 5);
-		lsEnemy = new LinkedList<>();
+		//Enemy e = p.Shoot(dirX, dirY, spawnPos);;
 
 		// Non so se le posizioni dei nemici le inizializziamo tutte 0,0 nella lista
 		// oppure le carichiamo tutte divere
-		for (int i = 0; i < 10; i++)
-			lsEnemy.add(new Enemy(2000, 500, 1, 10));
-	}
 
+	}
 	// Fa nascere i nemici in posizioni random
 	public void startEnemy() {
-
+			Enemy e = new Enemy(2000, p.getY(), 1, 2);
+			lse.add(e);
 	}
 
 	// Il metodo enemyFire viene chiamato quando l'aereo del giocatore si trova nel
