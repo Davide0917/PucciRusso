@@ -1,28 +1,33 @@
 package GameLogic;
 
-import java.util.*;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class GameEngine {
 	public Airplane p;
 	public MyShot s;
+	public LinkedList<Enemy> lsEnemy;
+	int index;
 	public Enemy e;
-	public List<Enemy> lse;
+	// Dal Frame mi prendo le dimensioni dello schermo
+	public int width, height;
 
-	public GameEngine() {
-		p = new Airplane(0, 0, 5, 7);
-		e = new Enemy(2000, p.getY(), 3, 2);
-		s = new MyShot(0, 100, 5);
-		//Enemy e = p.Shoot(dirX, dirY, spawnPos);;
-
-		// Non so se le posizioni dei nemici le inizializziamo tutte 0,0 nella lista
-		// oppure le carichiamo tutte divere
-
+	public GameEngine(int x, int y) {
+		p = new Airplane(0, 0, 3, 10);
+		s = new MyShot(p.getX(), p.getY(), 7);
+		lsEnemy = new LinkedList<>();
+		width = x;
+		height = y;
+		// Carichiamo i nemici nella linkedlist tutti in posizioni casuali vicino alla y
+		// dell'areoplano ma non riesco
+		// a mappare bene la grandezza del mondo
+		for (int i = 0; i < 10; i++)
+			lsEnemy.add(new Enemy(width, randInt(p.getY() - 200, p.getY() + 200), 1, 2));
 	}
+
 	// Fa nascere i nemici in posizioni random
 	public void startEnemy() {
-			Enemy e = new Enemy(2000, p.getY(), 1, 2);
-			lse.add(e);
+
 	}
 
 	// Il metodo enemyFire viene chiamato quando l'aereo del giocatore si trova nel
@@ -67,26 +72,70 @@ public class GameEngine {
 		return randoNum;
 	}
 
-	public void FixedUpdate(String tag) {
-		if (tag == "Enemy")
-			e.scroll();
+	// Controlla collisioni tra myshot e enemy ma bisogna definire meglio le
+	// collision box che per ora è un quadrato 20x20
+	public boolean collision(MyShot shot, Enemy e) {
+		if (shot.getX() > e.getX() - 10 && shot.getX() < e.getX() + 10 && shot.getY() > e.getY() - 10
+				&& shot.getY() < e.getY() + 10)
+			return true;
+		return false;
 	}
 
-	// Metodo da sistemaree era solo per capire il procedimento
-	public void PlayerFire() {
-		if (s.getX() <= 1800) {
-			s.scroll();
+	// Per il momento per le collision box sto usando costanti ma dovrei avere le
+	// dimensioni dell'aereo e dei vari sprite
+	public boolean collisionAirplane(Airplane a, Enemy e) {
+		if (a.getX() > e.getX() - 120 && a.getX() < e.getX() + 120 && a.getY() > e.getY() - 50
+				&& a.getY() < e.getY() + 50) {
+			return true;
+		}
+		return false;
+	}
 
-		} else {
-			s.setFire(false);
-			s.reset();
+	public void FixedUpdate(String tag) {
+
+		if (tag == "Enemy") {
+			lsEnemy.get(index).scroll();
+
+			// dir serve per sapere se il nemico deve scendere o salire
+			if (lsEnemy.get(index).getY() > p.getY())
+				// richiamo la funzione align che scrolla in verticale
+				lsEnemy.get(index).align(-1);
+			else
+				// richiamo la funzione align che scrolla in verticale
+				lsEnemy.get(index).align(1);
+
+			if (lsEnemy.get(index).getX() < 0 - width * 1 / 3 && index < 10)
+				index++;
 		}
-		if (((s.getY() >= (e.getY() - 150)) && (s.getY() <= e.getY() + 150)) && (((s.getX() >= (e.getX() - 150)) && (s.getX() <= e.getX() + 150)))) {
-			e.setLifes(e.getLifes() - 1);
-			s.reset();
-			s.setFire(false);
-			System.out.println("Colpitoooooo");
+
+		if (tag == "Shot") {
+
+			// se lo sparo supera lo schermo scompare e se ne crea un altro pronto ad essere
+			// sparato
+			if (s.isFire() && s.getX() < width * 75 / 100) {
+				s.scroll();
+			} else {
+				s = new MyShot(p.getX(), p.getY(), 7);
+			}
+
 		}
+
+		// collisione fra sparo e nemico
+		if (s.isFire() && collision(s, lsEnemy.get(index))) {
+			s.setFire(false);
+			index++;
+		}
+
+		// collisione kamikaze diminuisce le vite
+		if (collisionAirplane(p, lsEnemy.get(index))) {
+			p.setLifes(p.getLifes() - 1);
+			index++;
+		}
+		System.out.println(p.getLifes());
+	}
+
+	public int getIndex() {
+		return index;
 	}
 
 }

@@ -20,7 +20,8 @@ public class TimerLogic extends Thread {
 				ge.FixedUpdate("Enemy");
 				
 				if(ge.s.isFire()==true)
-					ge.PlayerFire();
+					
+				ge.FixedUpdate("Shot");
 			try {
 				sleep(500 / FPS);
 			} catch (InterruptedException e) {

@@ -3,18 +3,12 @@ package GameLogic;
 import Component.Cell2D;
 
 public class GameObject {
-	String type;
 	Cell2D position;
-	int life;
 	int speed;
 	
-	public GameObject() {
-		type = " ";
-		position.setX(0);
-		position.setY(0);
-		life = 0;
-		speed = 0;
-		
+	public GameObject(int x, int y, int speed) {
+		this.position = new Cell2D(x, y);
+		this.speed = speed;
 	}
 	
 	public void setX(int x) {
@@ -31,14 +25,6 @@ public class GameObject {
 	
 	public int getY() {
 		return position.getY();
-	}
-	
-	public void setLife(int x) {
-		this.life = x;
-	}
-	
-	public int getLifes() {
-		return life;
 	}
 	
 	public void setSpeed(int x) {

@@ -13,6 +13,7 @@ import GameLogic.TimerLogic;
 public class MyFrame {
 
 	static boolean FULL_SCREEN = true;
+	//Parametri per gestire fullscreeen e dimensioni
 	static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 	static int WIDTH = 800, HEIGHT = 600;
 
@@ -87,12 +88,12 @@ public class MyFrame {
 	}
 
 	private static void StartGame(GAMEMODE gamemode) {
-		
+	
 		if (tl == null || !tl.isAlive() || tg == null || tg.isAlive()) {
 			int width = (WIDTH * 20) / 800;
 			int heigth = (HEIGHT * 15) / 600;
 			
-			ge = new GameEngine();
+			ge = new GameEngine(HEIGHT,WIDTH);
 			gamePanel = new GamePanel(ge);
 			SwitchPanel(gamePanel);
 	
@@ -113,9 +114,7 @@ public class MyFrame {
 		if (tl != null && tl.isAlive())
 			tl.stop();
 		if (tg != null && tg.isAlive())
-			tg.stop();
-		
-		
+			tg.stop();	
 	}
 	
 	private static void PauseGame() {
@@ -124,10 +123,6 @@ public class MyFrame {
 		if (tg != null && tg.isAlive())
 			tg.suspend();
 		
-		/*if (server != null && server.isAlive())
-			server.suspend();
-		if (client != null && client.isAlive())
-			client.suspend();*/
 	}
 	
 	private static void ResumeGame() {
@@ -143,7 +138,7 @@ public class MyFrame {
 
 		frame.add(panel);
 		frame.pack();
-		frame.setVisible(true);
+		frame.setVisible(true);	
 
 		panel.setFocusable(true);
 		panel.requestFocusInWindow();
