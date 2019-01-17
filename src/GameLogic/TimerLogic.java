@@ -18,8 +18,6 @@ public class TimerLogic extends Thread {
 	public void run() {
 		while(true) {
 				ge.FixedUpdate("Enemy");
-				
-				if(ge.s.isFire()==true)
 					
 				ge.FixedUpdate("Shot");
 			try {

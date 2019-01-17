@@ -37,10 +37,10 @@ public class GameMenu extends JPanel {
 		}
 		try {
 			customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/Font/The_Bellovia_Sans.ttf"))
-					.deriveFont(36f);
+					.deriveFont(70f);
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFont);
 			titleFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/Font/The_Bellovia_Sans.ttf"))
-					.deriveFont(56f);
+					.deriveFont(100f);
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(titleFont);
 		} catch (FontFormatException | IOException e) {
 			System.out.println("Font non caricato! ");

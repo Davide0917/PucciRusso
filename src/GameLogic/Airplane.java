@@ -40,5 +40,11 @@ public class Airplane {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
+	public Bullet Shoot(Cell2D Position) {
+		//va messo un controllo 
+			Bullet B = new Bullet(Position.getX(), Position.getY(), 7);
+			return B;
+		
+	}
 
 }

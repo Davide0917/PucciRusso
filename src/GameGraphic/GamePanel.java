@@ -118,9 +118,12 @@ import Component.Cell2D;
 import GameLogic.Airplane;
 import GameLogic.Enemy;
 import GameLogic.GameEngine;
-import GameLogic.MyShot;
+import GameLogic.Bullet;
 
-enum GAMEMODE { OFFLINE };
+enum GAMEMODE {
+	OFFLINE
+};
+
 public class GamePanel extends JPanel {
 
 	private GAMEMODE gamemode;
@@ -142,15 +145,15 @@ public class GamePanel extends JPanel {
 
 	public GamePanel(GameEngine world) {
 		super();
-		
-		gamemode = GAMEMODE.OFFLINE;	
-		
+
+		gamemode = GAMEMODE.OFFLINE;
+
 		// Debug
 		// plane = new Airplane(-50, 100, 5, 7);
 		// nemico = new Enemy(500, 100, 1, 2);
 
 		this.world = world;
-		//MShot = new MyShot(0, 0, 20);
+		// MShot = new MyShot(0, 0, 20);
 		// MShot = new MyShot(0, 0, 20);
 		initGUI();
 		initEH();
@@ -186,10 +189,12 @@ public class GamePanel extends JPanel {
 		else
 			setState(STATE.HOME);
 
-		if (world.s.isFire() == true) {
-			g.drawImage(sprites.get("Shot"), (world.s.getX() + (dims.getX() / 2)), (world.s.getY() + (dims.getY() / 3)),
-					(dimShot.getX() / 7), (dimShot.getY() / 10), null);
-		}
+		
+		if (world.llShot!=null) {
+			for(int i = 0; i < world.llShot.size(); i ++)
+			g.drawImage(sprites.get("Shot"),(world.llShot.get(i).getX() + (dims.getX() / 2)), (world.llShot.get(i).getY() + (dims.getY() / 3)),
+		  (dimShot.getX() / 7), (dimShot.getY() / 10), null); }
+		 
 
 	}
 
@@ -232,6 +237,8 @@ public class GamePanel extends JPanel {
 			// Evento pressione tastino
 			@Override
 			public void keyPressed(KeyEvent e) {
+
+				// I limite del aereo non funge in risoluzioni più piccole (da sistemare )
 				// Limito i movimenti dell'aereo in base alle dimensioni dello schermo
 				if (e.getKeyCode() == KeyEvent.VK_UP && world.p.getY() > 0 - sprites.get("Enemy").getHeight(null) / 2)
 					world.p.move(-1);
@@ -247,14 +254,8 @@ public class GamePanel extends JPanel {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					world.s.setX(world.p.getX());
-					world.s.setY(world.p.getY());
-					world.s.setFire(true);
+					world.setShot(new Cell2D(world.p.getX(), world.p.getY()));
 				}
-					if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-						System.out.println("Sto Sparando-.....");
-						world.s.setFire(true);
-					}
 			}
 		});
 	}
@@ -274,6 +275,7 @@ public class GamePanel extends JPanel {
 		int y = (startHeigth * ResolutionY) / 1080;
 		return new Cell2D(x, y);
 	}
+
 	public STATE getState() {
 		return state;
 	}

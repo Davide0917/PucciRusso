@@ -40,7 +40,6 @@ public class MyFrame {
 			WIDTH = device.getFullScreenWindow().getWidth();
 			HEIGHT = device.getFullScreenWindow().getHeight();
 		}
-
 		menuPanel = new GameMenu();
 		SwitchPanel(menuPanel);
 		state = ((GameMenu) menuPanel).getState();
