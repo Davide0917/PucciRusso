@@ -11,7 +11,7 @@ public class TimerEnemy extends Thread {
 	}
 	public void run() {
 		while(true) {
-				ge.startEnemy();
+				//ge.startEnemy();
 			try {
 				sleep(500 );
 			} catch (InterruptedException e) {

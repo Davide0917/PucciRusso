@@ -246,17 +246,15 @@ public class GamePanel extends JPanel {
 						- (sprites.get("Enemy").getHeight(null) + sprites.get("Enemy").getHeight(null) / 2))
 					world.p.move(1);
 
+				//da gestire il movimento e sparo sincro 
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					world.setShot(new Cell2D(world.p.getX(), world.p.getY()));
+				}	
+				
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 					state = STATE.PAUSE;
 				repaint();
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					world.setShot(new Cell2D(world.p.getX(), world.p.getY()));
-				}
-			}
+			}	
 		});
 	}
 

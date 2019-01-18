@@ -7,7 +7,7 @@ import Component.Cell2D;
 
 public class GameEngine {
 	public Airplane p;
-	//public Bullet s;
+	// public Bullet s;
 	public LinkedList<Enemy> lsEnemy;
 	public LinkedList<Bullet> llShot;
 	int index;
@@ -21,19 +21,15 @@ public class GameEngine {
 		llShot = new LinkedList<>();
 		width = x;
 		height = y;
-	
+
 		// Carichiamo i nemici nella linkedlist tutti in posizioni casuali vicino alla y
 		// dell'areoplano ma non riesco
 		// a mappare bene la grandezza del mondo
-	for (int i = 0; i < 10; i++)
-		lsEnemy.add(new Enemy(width, randInt(p.getY() - 200, p.getY() + 200), 1, 2));
+		for (int i = 0; i < 10; i++)
+			lsEnemy.add(new Enemy(width, randInt(p.getY() - 200, p.getY() + 200), 1, 2));
 	}
 
-	// Fa nascere i nemici in posizioni random
-	public void startEnemy() {
-		
-	}
-	//servere per caricare le muzioni
+	// servere per caricare le muzioni
 
 	// Il metodo enemyFire viene chiamato quando l'aereo del giocatore si trova nel
 	// range di tiro dei nemici facendo partire l'enemyShot dalle coordinate
@@ -114,16 +110,15 @@ public class GameEngine {
 		}
 		if (tag == "Shot") {
 			// se lo sparo supera lo schermo scompare e se ne crea un altro pronto ad essere
-			for (int i = 0; i < llShot.size(); i ++)
+			for (int i = 0; i < llShot.size(); i++)
 				llShot.get(i).scroll();
-			
+
 		}
 		// collisione fra sparo e nemico
-		/*if (llShot.isFire() && collision(llShot.get(index), lsEnemy.get(index))) {
-			s.setFire(false);
-			index++;
-		}
-	*/
+		/*
+		 * if (llShot.isFire() && collision(llShot.get(index), lsEnemy.get(index))) {
+		 * s.setFire(false); index++; }
+		 */
 		// collisione kamikaze diminuisce le vite
 		if (collisionAirplane(p, lsEnemy.get(index))) {
 			p.setLifes(p.getLifes() - 1);
@@ -131,17 +126,16 @@ public class GameEngine {
 		}
 		System.out.println(p.getLifes());
 	}
-	
+
 	public void setShot(Cell2D Position) {
 		Bullet B = p.Shoot(Position);
 		if (B != null) {
 			llShot.add(B);
 		}
 	}
-	
+
 	public int getIndex() {
 		return index;
 	}
 
-	
 }
