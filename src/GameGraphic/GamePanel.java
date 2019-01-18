@@ -131,6 +131,7 @@ public class GamePanel extends JPanel {
 	// Reference alla risoluzione del panello
 	private int ResolutionX, ResolutionY;
 	private int DimPlaneX, DimPlaneY;
+
 	// Reference al toolkit e alle immagini
 	Toolkit tk;
 	MediaTracker spriteTracker;
@@ -147,14 +148,7 @@ public class GamePanel extends JPanel {
 		super();
 
 		gamemode = GAMEMODE.OFFLINE;
-
-		// Debug
-		// plane = new Airplane(-50, 100, 5, 7);
-		// nemico = new Enemy(500, 100, 1, 2);
-
 		this.world = world;
-		// MShot = new MyShot(0, 0, 20);
-		// MShot = new MyShot(0, 0, 20);
 		initGUI();
 		initEH();
 
@@ -183,9 +177,10 @@ public class GamePanel extends JPanel {
 		}
 		// Lo sprite dei nemici viene ristampata fino a quando non è stata letta tutta
 		// la linkedlist
-		if (world.getIndex() < 10)
-			g.drawImage(sprites.get("Enemy"), world.lsEnemy.get(world.getIndex()).getX(),
-					world.lsEnemy.get(world.getIndex()).getY(), dimEnemy.getX() * 2, dimEnemy.getY() * 2, null);
+		if (world.lsEnemy!=null)
+			for(int i = 0; i < world.lsEnemy.size(); i ++)
+				g.drawImage(sprites.get("Enemy"), world.lsEnemy.get(i).getX(),
+						world.lsEnemy.get(i).getY(), dimEnemy.getX() * 2, dimEnemy.getY() * 2, null);
 		else
 			setState(STATE.HOME);
 
@@ -247,14 +242,17 @@ public class GamePanel extends JPanel {
 					world.p.move(1);
 
 				//da gestire il movimento e sparo sincro 
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					world.setShot(new Cell2D(world.p.getX(), world.p.getY()));
-				}	
-				
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 					state = STATE.PAUSE;
 				repaint();
-			}	
+			}
+			@Override 
+			public void keyReleased(KeyEvent e) {				
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					world.setShot(new Cell2D(world.p.getX(), world.p.getY()));
+				}	
+				repaint();
+			}
 		});
 	}
 

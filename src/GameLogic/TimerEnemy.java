@@ -4,22 +4,25 @@ public class TimerEnemy extends Thread {
 	
 	private GameEngine ge;
 	
-	int FPS = 10;
+	int FPSmin = 5;
+	int FPSmax = 30;
 	
 	public TimerEnemy(GameEngine ge) {
 		this.ge = ge;
 	}
 	public void run() {
 		while(true) {
-				//ge.startEnemy();
+			
+				ge.CreateEnemy();
+			
 			try {
-				sleep(500 );
+				sleep((ge.randInt(FPSmin, FPSmax))*100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			}
-		}
 	
-
+		}
+	}
 }
+

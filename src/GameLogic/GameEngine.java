@@ -3,6 +3,8 @@ package GameLogic;
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.xml.crypto.dsig.spec.DigestMethodParameterSpec;
+
 import Component.Cell2D;
 
 public class GameEngine {
@@ -12,7 +14,6 @@ public class GameEngine {
 	public LinkedList<Bullet> llShot;
 	public int shot_timer;
 	int index;
-	public Enemy e;
 	// Dal Frame mi prendo le dimensioni dello schermo
 	public int width, height;
 
@@ -26,11 +27,15 @@ public class GameEngine {
 		// Carichiamo i nemici nella linkedlist tutti in posizioni casuali vicino alla y
 		// dell'areoplano ma non riesco
 		// a mappare bene la grandezza del mondo
-		for (int i = 0; i < 10; i++)
-			lsEnemy.add(new Enemy(width, randInt(p.getY() - 200, p.getY() + 200), 1, 2));
+	
 	}
 
-	// servere per caricare le muzioni
+	
+	public void CreateEnemy() {
+			Enemy lE = new Enemy(width , randInt(p.getY() - 200, p.getY() + 200), 1, 2);
+				if(lE != null)
+					lsEnemy.add(lE);
+	}
 
 	// Il metodo enemyFire viene chiamato quando l'aereo del giocatore si trova nel
 	// range di tiro dei nemici facendo partire l'enemyShot dalle coordinate
@@ -96,18 +101,20 @@ public class GameEngine {
 	public void FixedUpdate(String tag) {
 
 		if (tag == "Enemy") {
-			lsEnemy.get(index).scroll();
+			for (int i = 0; i < lsEnemy.size(); i++)
+				lsEnemy.get(i).scroll();
 
 			// dir serve per sapere se il nemico deve scendere o salire
-			if (lsEnemy.get(index).getY() > p.getY())
-				// richiamo la funzione align che scrolla in verticale
-				lsEnemy.get(index).align(-1);
-			else
-				// richiamo la funzione align che scrolla in verticale
-				lsEnemy.get(index).align(1);
-
-			if (lsEnemy.get(index).getX() < 0 - width * 1 / 3 && index < 10)
-				index++;
+			for (int i = 0; i < lsEnemy.size(); i++) {
+				if (lsEnemy.get(i).getY() > p.getY())
+					// richiamo la funzione align che scrolla in verticale
+					lsEnemy.get(i).align(-1);
+				else
+					// richiamo la funzione align che scrolla in verticale
+					lsEnemy.get(i).align(1);
+			}
+			/*if (lsEnemy.get(index).getX() < 0 - width * 1 / 3 && index < 10)
+				index++;*/
 		}
 		if (tag == "Shot") {
 			shot_timer++;
@@ -122,12 +129,13 @@ public class GameEngine {
 		 * s.setFire(false); index++; }
 		 */
 		// collisione kamikaze diminuisce le vite
-		if (collisionAirplane(p, lsEnemy.get(index))) {
+	/*	if (collisionAirplane(p, lsEnemy.get(index))) {
 			p.setLifes(p.getLifes() - 1);
 			index++;
 		}
 		System.out.println(p.getLifes());
-	}
+	*/
+		}
 
 	public void setShot(Cell2D Position) {
 		Bullet B = p.Shoot(Position);
