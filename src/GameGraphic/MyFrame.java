@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import GameLogic.GameEngine;
+import GameLogic.TimerEnemy;
 import GameLogic.TimerGraphic;
 import GameLogic.TimerLogic;
 
@@ -24,6 +25,7 @@ public class MyFrame {
 	static GameEngine ge;
 	static TimerLogic tl;
 	static TimerGraphic tg;
+	static TimerEnemy te;
 
 	public static void main(String[] args) throws InterruptedException {
 
@@ -39,6 +41,7 @@ public class MyFrame {
 			device.setFullScreenWindow(frame);
 			WIDTH = device.getFullScreenWindow().getWidth();
 			HEIGHT = device.getFullScreenWindow().getHeight();
+		
 		}
 		menuPanel = new GameMenu();
 		SwitchPanel(menuPanel);
@@ -88,20 +91,22 @@ public class MyFrame {
 
 	private static void StartGame(GAMEMODE gamemode) {
 	
-		if (tl == null || !tl.isAlive() || tg == null || tg.isAlive()) {
+		if (tl == null || !tl.isAlive() || tg == null || tg.isAlive() || te == null || !te.isAlive() ) {
 			int width = (WIDTH * 20) / 800;
 			int heigth = (HEIGHT * 15) / 600;
 			
-			ge = new GameEngine(HEIGHT,WIDTH);
+			ge = new GameEngine(WIDTH,HEIGHT);
 			gamePanel = new GamePanel(ge);
 			SwitchPanel(gamePanel);
 	
 			// Start threads
 			tl = new TimerLogic(ge);
 			tg = new TimerGraphic(gamePanel);
+			te = new TimerEnemy(ge);
 			
 			tl.start();
 			tg.start();
+			te.start();
 			
 			state = STATE.GAME;
 		} else {
@@ -114,6 +119,9 @@ public class MyFrame {
 			tl.stop();
 		if (tg != null && tg.isAlive())
 			tg.stop();	
+		if (te != null && te.isAlive())
+			te.stop();	
+	
 	}
 	
 	private static void PauseGame() {
@@ -121,12 +129,15 @@ public class MyFrame {
 			tl.suspend();
 		if (tg != null && tg.isAlive())
 			tg.suspend();
+		if (te != null && te.isAlive())
+			te.suspend();
 		
 	}
 	
 	private static void ResumeGame() {
 		if (tl != null) tl.resume();
 		if (tg != null) tg.resume();
+		if (te != null) te.resume();
 		
 	}
 
