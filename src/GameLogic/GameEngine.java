@@ -10,6 +10,7 @@ public class GameEngine {
 	// public Bullet s;
 	public LinkedList<Enemy> lsEnemy;
 	public LinkedList<Bullet> llShot;
+	public int shot_timer;
 	int index;
 	public Enemy e;
 	// Dal Frame mi prendo le dimensioni dello schermo
@@ -109,6 +110,7 @@ public class GameEngine {
 				index++;
 		}
 		if (tag == "Shot") {
+			shot_timer++;
 			// se lo sparo supera lo schermo scompare e se ne crea un altro pronto ad essere
 			for (int i = 0; i < llShot.size(); i++)
 				llShot.get(i).scroll();
@@ -129,8 +131,9 @@ public class GameEngine {
 
 	public void setShot(Cell2D Position) {
 		Bullet B = p.Shoot(Position);
-		if (B != null) {
+		if (B != null && shot_timer > 30) {
 			llShot.add(B);
+			shot_timer = 0;
 		}
 	}
 

@@ -2,28 +2,13 @@ package GameLogic;
 
 import Component.Cell2D;
 
-public class Enemy {
-	Cell2D position;
+public class Enemy extends GameObject{
 	int lifes;
-	int speed;
 	int align_speed = 1;
 
 	public Enemy(int x, int y, int lifes, int speed) {
-		position = new Cell2D(x, y);
+		super(x, y, speed);
 		this.lifes = lifes;
-		this.speed = speed;
-	}
-
-	public int getX() {
-		return position.getX();
-	}
-
-	public int getY() {
-		return position.getY();
-	}
-
-	public int getSpeed() {
-		return speed;
 	}
 
 	public int getLifes() {
