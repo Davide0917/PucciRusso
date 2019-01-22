@@ -59,13 +59,17 @@ public class GameMenu extends JPanel {
 		g.drawImage(background, 0, 0, ResolutionX, ResolutionY, null);
 
 		if (state == STATE.HOME) {
+<<<<<<< HEAD
 			String title = "PORCO SEPTEMBER";
+=======
+			String title = "PUCCIRUSSO";
+>>>>>>> d516257af9854926d7ba4eb980c16f01cfd18099
 			String c1 = "SINGLE PLAYER";
 			String c2 = "SETTINGS";
 			String c3 = "EXIT";
 
 			g.setFont(titleFont);
-			g.setColor(new Color(0, 0, 0));
+			g.setColor(new Color(255, 255, 255));
 			g.drawString(title, ResolutionX / 2 - (g.getFontMetrics().stringWidth(title) / 2),
 					ResolutionY / 2 - g.getFontMetrics().getHeight());
 

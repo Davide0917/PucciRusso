@@ -15,8 +15,12 @@ public class GameEngine {
 	public Airplane p;
 	public LinkedList<Enemy> lsEnemy;
 	public LinkedList<Bullet> llShot;
+<<<<<<< HEAD
 	
 	
+=======
+	public int shot_timer;
+>>>>>>> d516257af9854926d7ba4eb980c16f01cfd18099
 	int index;
 	// Dal Frame mi prendo le dimensioni dello schermo
 	public int width, height;
@@ -91,6 +95,7 @@ public class GameEngine {
 			}
 		}
 		if (tag == "Shot") {
+			shot_timer++;
 			// se lo sparo supera lo schermo scompare e se ne crea un altro pronto ad essere
 			for (int i = 0; i < llShot.size(); i++) {
 				llShot.get(i).scroll();
@@ -102,10 +107,17 @@ public class GameEngine {
 		}
 	}
 
+<<<<<<< HEAD
 	public void setShot(Cell2D Position, int SpeedShot, Cell2D Grafic) {
 		Bullet B = p.Shoot(Position, SpeedShot, Grafic);
 		if (B != null) {
+=======
+	public void setShot(Cell2D Position) {
+		Bullet B = p.Shoot(Position);
+		if (B != null && shot_timer > 30) {
+>>>>>>> d516257af9854926d7ba4eb980c16f01cfd18099
 			llShot.add(B);
+			shot_timer = 0;
 		}
 	}
 	

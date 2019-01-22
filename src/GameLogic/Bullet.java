@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import Component.Cell2D;
 
+<<<<<<< HEAD
 public class Bullet {
 	protected Cell2D position;
 	protected Cell2D grafic;
@@ -37,24 +38,30 @@ public class Bullet {
 	public int getX() {
 		return position.getX();
 	}
+=======
+public class Bullet extends GameObject {
+	boolean fire = false;
 
-	public void setX(int y) {
-		position.setY(y);
+	public Bullet(int x, int y, int speed) {
+		super(x, y, speed);
 	}
 
-	public int getY() {
-		return position.getY();
+	public boolean isFire() {
+		return fire;
 	}
 
-	public void setY(int y) {
-		position.setY(y);
+	public void setFire(boolean fire) {
+		this.fire = fire;
+>>>>>>> d516257af9854926d7ba4eb980c16f01cfd18099
+
 	}
 
 	public void scroll() {
-		//System.out.println(getX());
+		// System.out.println(getX());
 		this.position.setX(position.getX() + speed);
 
 	}
+
 	public void reset() {
 		this.position.setX(0);
 	}

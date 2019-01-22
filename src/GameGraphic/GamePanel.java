@@ -245,10 +245,17 @@ public class GamePanel extends JPanel {
 
 				// I limite del aereo non funge in risoluzioni più piccole (da sistemare )
 				// Limito i movimenti dell'aereo in base alle dimensioni dello schermo
+<<<<<<< HEAD
 				if (e.getKeyCode() == KeyEvent.VK_UP && world.p.getY() > dims.getY() / 2)
 					world.p.move(-1);
 
 				else if (e.getKeyCode() == KeyEvent.VK_DOWN && world.p.getY() < ResolutionY - ResolutionY / 4)
+=======
+				if ((e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) && world.p.getY() > 0 - sprites.get("Enemy").getHeight(null) / 2)
+					world.p.move(-1);
+				else if ((e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) && world.p.getY() < ResolutionY
+						- (sprites.get("Enemy").getHeight(null) + sprites.get("Enemy").getHeight(null) / 2))
+>>>>>>> d516257af9854926d7ba4eb980c16f01cfd18099
 					world.p.move(1);
 
 				// da gestire il movimento e sparo sincro
