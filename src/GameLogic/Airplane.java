@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 
 import Component.Cell2D;
 
-<<<<<<< HEAD
 public class Airplane {
 	protected Cell2D position;
 	protected Cell2D Grafics;
@@ -33,14 +32,6 @@ public class Airplane {
 
 	public int getY() {
 		return position.getY();
-=======
-public class Airplane extends GameObject{
-	int lifes;
-
-	public Airplane(int x, int y, int lifes, int speed) {
-		super(x,y,speed);
-		this.lifes = lifes;
->>>>>>> d516257af9854926d7ba4eb980c16f01cfd18099
 	}
 
 	public void move(int dir) {
@@ -55,7 +46,6 @@ public class Airplane extends GameObject{
 		this.lifes = lifes;
 	}
 
-<<<<<<< HEAD
 	public int getSpeed() {
 		return speed;
 	}
@@ -64,9 +54,6 @@ public class Airplane extends GameObject{
 		this.speed = speed;
 	}
 	public Bullet Shoot(Cell2D Position, int speedBullet, Cell2D Grafic) {
-=======
-	public Bullet Shoot(Cell2D Position) {
->>>>>>> d516257af9854926d7ba4eb980c16f01cfd18099
 		//va messo un controllo 
 			Bullet B = new Bullet(Position.getX(), Position.getY(), speedBullet, true, Grafic.getX(), Grafic.getY());
 			return B;

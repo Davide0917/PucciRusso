@@ -4,20 +4,14 @@ import java.awt.Rectangle;
 
 import Component.Cell2D;
 
-<<<<<<< HEAD
 public class Enemy {
 	protected Cell2D position;
 	protected Cell2D Grafic;
 	int lifes;
 	protected int speed;
-=======
-public class Enemy extends GameObject{
-	int lifes;
->>>>>>> d516257af9854926d7ba4eb980c16f01cfd18099
 	int align_speed = 1;
 	boolean aliveEnemy;
 
-<<<<<<< HEAD
 	public Enemy(int x, int y, int lifes, int speed, boolean aliveEnemy, int DimX, int DimY) {
 		position = new Cell2D(x, y);
 		Grafic = new Cell2D(DimX, DimY);
@@ -52,11 +46,6 @@ public class Enemy extends GameObject{
 
 	public int getSpeed() {
 		return speed;
-=======
-	public Enemy(int x, int y, int lifes, int speed) {
-		super(x, y, speed);
-		this.lifes = lifes;
->>>>>>> d516257af9854926d7ba4eb980c16f01cfd18099
 	}
 
 	public int getLifes() {
