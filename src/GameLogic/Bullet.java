@@ -1,25 +1,37 @@
 package GameLogic;
 
+import java.awt.Rectangle;
+
 import Component.Cell2D;
 
 public class Bullet {
-	Cell2D position;
-	int speed;
-	boolean fire = false;
+	protected Cell2D position;
+	protected Cell2D grafic;
+	protected int speed;
+	boolean AliveBullet;
 	
 	
-	public Bullet(int x, int y, int speed) {
+	public Bullet(int x, int y, int speed, boolean AliveBullet, int Dimx, int Dimy) {
 		position = new Cell2D(x, y);
+		grafic = new Cell2D(Dimx, Dimy);
 		this.speed = speed;
+		this.AliveBullet = AliveBullet;
 	}
 	
-	public boolean isFire() {
-		return fire;
+	public Cell2D getPosition() {
+		return position;
 	}
 
-	public void setFire(boolean fire) {
-		this.fire = fire;
-		
+	public void setPosition(Cell2D position) {
+		this.position = position;
+	}
+
+	public boolean isAliveBullet() {
+		return AliveBullet;
+	}
+
+	public void setAliveBullet(boolean aliveBullet) {
+		AliveBullet = aliveBullet;
 	}
 
 	public int getX() {
@@ -45,6 +57,25 @@ public class Bullet {
 	}
 	public void reset() {
 		this.position.setX(0);
+	}
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
+	public Rectangle getBoundsBullet() {
+        return new Rectangle(getPosition().getX(), getPosition().getY(), getGrafic().getX(), getGrafic().getY());
+    }
+
+	public Cell2D getGrafic() {
+		return grafic;
+	}
+
+	public void setGrafic(Cell2D grafic) {
+		this.grafic = grafic;
 	}
 
 }

@@ -10,6 +10,7 @@ import GameLogic.GameEngine;
 import GameLogic.TimerEnemy;
 import GameLogic.TimerGraphic;
 import GameLogic.TimerLogic;
+import GameLogic.World;
 
 public class MyFrame {
 
@@ -92,9 +93,10 @@ public class MyFrame {
 	private static void StartGame(GAMEMODE gamemode) {
 	
 		if (tl == null || !tl.isAlive() || tg == null || tg.isAlive() || te == null || !te.isAlive() ) {
-			int width = (WIDTH * 20) / 800;
-			int heigth = (HEIGHT * 15) / 600;
-			
+	
+			/*if(ge != null)
+				ge.Stop;
+			*/
 			ge = new GameEngine(WIDTH,HEIGHT);
 			gamePanel = new GamePanel(ge);
 			SwitchPanel(gamePanel);
@@ -135,9 +137,12 @@ public class MyFrame {
 	}
 	
 	private static void ResumeGame() {
-		if (tl != null) tl.resume();
-		if (tg != null) tg.resume();
-		if (te != null) te.resume();
+		if (tl != null) 
+			tl.resume();
+		if (tg != null) 
+			tg.resume();
+		if (te != null) 
+			te.resume();
 		
 	}
 

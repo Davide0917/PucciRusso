@@ -111,6 +111,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -129,8 +130,7 @@ public class GamePanel extends JPanel {
 	private GAMEMODE gamemode;
 
 	// Reference alla risoluzione del panello
-	private int ResolutionX, ResolutionY;
-	private int DimPlaneX, DimPlaneY;
+	static private int ResolutionX, ResolutionY;
 
 	// Reference al toolkit e alle immagini
 	Toolkit tk;
@@ -142,55 +142,64 @@ public class GamePanel extends JPanel {
 	// Airplane plane;
 	// World è un oggetto gameEngine dove gira è presente tutta la logica del gioco
 	GameEngine world;
+	Cell2D dimShot;
+	Cell2D dimEnemy;
+	Cell2D dims;
 	// Enemy nemico;
+	protected int SpeedEnemy;
+	protected int SpeedBullet;
 
 	public GamePanel(GameEngine world) {
 		super();
 
 		gamemode = GAMEMODE.OFFLINE;
 		this.world = world;
+
 		initGUI();
 		initEH();
 
 		state = STATE.GAME;
+
 	}
 
 	public void paintComponent(Graphics g) {
 		// Richiamo il costruttore di base
 		super.paintComponent(g);
 
-		g.drawImage(sprites.get("Sfondo"), 0, 0, ResolutionX, ResolutionY, null);
+		g.drawImage(sprites.get("Sfondo"), 0, 0, world.width, world.height, null);
 
-		Cell2D dims = GetScaledDims(sprites.get("Player").getWidth(null), sprites.get("Player").getHeight(null));
+		dims = GetScaledDims(sprites.get("Player").getWidth(null), sprites.get("Player").getHeight(null));
 		Cell2D dimLifes = GetScaledDims(sprites.get("Lifes").getWidth(null), sprites.get("Lifes").getHeight(null));
-		Cell2D dimShot = GetScaledDims(sprites.get("Shot").getWidth(null), sprites.get("Shot").getHeight(null));
+		dimShot = GetScaledDims(sprites.get("Shot").getWidth(null) / 7, sprites.get("Shot").getHeight(null) / 10);
 
-		Cell2D dimEnemy = GetScaledDims(sprites.get("Enemy").getWidth(null), sprites.get("Enemy").getHeight(null));
+		dimEnemy = GetScaledDims(sprites.get("Enemy").getWidth(null) * 2, sprites.get("Enemy").getHeight(null) * 2);
 
-		DimPlaneX = dims.getX();
-		DimPlaneY = dims.getY();
-
-		g.drawImage(sprites.get("Player"), world.p.getX(), world.p.getY(), dims.getX(), dims.getY(), null);
+		if (world.p.getLifes() <= 0)
+			setState(STATE.HOME);
 		for (int i = 0; i < world.p.getLifes(); i++) {
 			g.drawImage(sprites.get("Lifes"), (ResolutionX / 3) + (i * (dimLifes.getX() / 10)),
 					(ResolutionY - (dimLifes.getY() / 4)), dimLifes.getX() / 2, dimLifes.getY() / 2, null);
 		}
 		// Lo sprite dei nemici viene ristampata fino a quando non è stata letta tutta
 		// la linkedlist
-		if (world.lsEnemy!=null)
-			for(int i = 0; i < world.lsEnemy.size(); i ++)
-				g.drawImage(sprites.get("Enemy"), world.lsEnemy.get(i).getX(),
-						world.lsEnemy.get(i).getY(), dimEnemy.getX() * 2, dimEnemy.getY() * 2, null);
+		if (world.lsEnemy != null)
+			for (int i = 0; i < world.lsEnemy.size(); i++)
+				g.drawImage(sprites.get("Enemy"), world.lsEnemy.get(i).getX(), world.lsEnemy.get(i).getY(),
+						dimEnemy.getX(), dimEnemy.getY(), null);
 		else
 			setState(STATE.HOME);
 
-		
-		if (world.llShot!=null) {
-			for(int i = 0; i < world.llShot.size(); i ++)
-			g.drawImage(sprites.get("Shot"),(world.llShot.get(i).getX() + (dims.getX() / 2)), (world.llShot.get(i).getY() + (dims.getY() / 3)),
-		  (dimShot.getX() / 7), (dimShot.getY() / 10), null); }
-		 
+		if (world.llShot != null) {
+			for (int i = 0; i < world.llShot.size(); i++)
+				g.drawImage(sprites.get("Shot"), (world.llShot.get(i).getX()), (world.llShot.get(i).getY()),
+						(dimShot.getX()), (dimShot.getY()), null);
+		}
 
+		g.drawImage(sprites.get("Player"), world.p.getX(), world.p.getY(), dims.getX(), dims.getY(), null);
+		if (world.p.isPass() == true) {
+			setGraficsPlayer();
+			setGraficsEnemy();
+		}
 	}
 
 	public void initGUI() {
@@ -199,7 +208,7 @@ public class GamePanel extends JPanel {
 		tk = Toolkit.getDefaultToolkit();
 		spriteTracker = new MediaTracker(this);
 		sprites = new HashMap<>();
-
+		world.p.setPass(true);
 		// Inserisco la coppia tag -> immagine
 		sprites.put("Player", tk.getImage("resources/image/plane.png"));
 		sprites.put("Sfondo", tk.getImage("resources/image/sfondo.png"));
@@ -227,6 +236,7 @@ public class GamePanel extends JPanel {
 	}
 
 	public void initEH() {
+
 		// Aggiungo la gestione degli eventi da tastiera
 		this.addKeyListener(new KeyAdapter() {
 			// Evento pressione tastino
@@ -235,22 +245,26 @@ public class GamePanel extends JPanel {
 
 				// I limite del aereo non funge in risoluzioni più piccole (da sistemare )
 				// Limito i movimenti dell'aereo in base alle dimensioni dello schermo
-				if (e.getKeyCode() == KeyEvent.VK_UP && world.p.getY() > 0 - sprites.get("Enemy").getHeight(null) / 2)
+				if (e.getKeyCode() == KeyEvent.VK_UP && world.p.getY() > dims.getY() / 2)
 					world.p.move(-1);
-				else if (e.getKeyCode() == KeyEvent.VK_DOWN && world.p.getY() < ResolutionY
-						- (sprites.get("Enemy").getHeight(null) + sprites.get("Enemy").getHeight(null) / 2))
+
+				else if (e.getKeyCode() == KeyEvent.VK_DOWN && world.p.getY() < ResolutionY - ResolutionY / 4)
 					world.p.move(1);
 
-				//da gestire il movimento e sparo sincro 
+				// da gestire il movimento e sparo sincro
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 					state = STATE.PAUSE;
 				repaint();
 			}
-			@Override 
-			public void keyReleased(KeyEvent e) {				
+
+			@Override
+			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					world.setShot(new Cell2D(world.p.getX(), world.p.getY()));
-				}	
+					world.setShot(
+							new Cell2D(world.p.getX() + (dims.getX() - dims.getX() / 7),
+									(world.p.getY() + (dims.getY()) - dims.getY() / 6)),
+							(world.width / 230), new Cell2D(dimShot.getX(), dimShot.getY()));
+				}
 				repaint();
 			}
 		});
@@ -279,4 +293,15 @@ public class GamePanel extends JPanel {
 	public void setState(STATE state) {
 		this.state = state;
 	}
+
+	public void setGraficsPlayer() {
+		world.p.setGrafics(new Cell2D(dims.getX(), dims.getY()));
+		world.p.setPass(false);
+	}
+
+	public void setGraficsEnemy() {
+		world.setDimsEnemy(new Cell2D(dimEnemy.getX(), dimEnemy.getY()));
+
+	}
+
 }

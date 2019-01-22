@@ -28,7 +28,7 @@ public class GameMenu extends JPanel {
 		tk = Toolkit.getDefaultToolkit();
 		spriteTracker = new MediaTracker(this);
 
-		background = tk.getImage("resources/image/Sfondo_Menu.jpg");
+		background = tk.getImage("resources/image/Sfondo_Menu1.png");
 		spriteTracker.addImage(background, 0);
 		try {
 			spriteTracker.waitForAll();
@@ -36,10 +36,10 @@ public class GameMenu extends JPanel {
 			e1.printStackTrace();
 		}
 		try {
-			customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/Font/The_Bellovia_Sans.ttf"))
+			customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/Font/WetArial-Regular.otf"))
 					.deriveFont(70f);
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFont);
-			titleFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/Font/The_Bellovia_Sans.ttf"))
+			titleFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/Font/WetArial-Regular.otf"))
 					.deriveFont(100f);
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(titleFont);
 		} catch (FontFormatException | IOException e) {
@@ -59,8 +59,8 @@ public class GameMenu extends JPanel {
 		g.drawImage(background, 0, 0, ResolutionX, ResolutionY, null);
 
 		if (state == STATE.HOME) {
-			String title = "11 SEPTEMBER";
-			String c1 = "SINGLEPLAYER";
+			String title = "PORCO SEPTEMBER";
+			String c1 = "SINGLE PLAYER";
 			String c2 = "SETTINGS";
 			String c3 = "EXIT";
 

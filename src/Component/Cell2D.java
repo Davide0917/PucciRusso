@@ -1,8 +1,9 @@
 package Component;
 
 public class Cell2D {
-	int x, y;
-
+	
+	protected int x = 0, y = 0;
+	
 	public Cell2D(int x, int y) {
 		super();
 		this.x = x;
